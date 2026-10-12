@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowRight, Eye, Printer } from 'lucide-react';
+import { ArrowRight, BookOpen, Check, Eye, Layers, Printer, ShoppingBag, Sparkles } from 'lucide-react';
 import {
   Language,
   PRODUCTS,
@@ -33,6 +33,17 @@ export const HomePage: React.FC<HomePageProps> = ({
 }) => {
   const [activeCategory, setActiveCategory] = useState<ProductCategory>('all');
   const [selectedPreviewIdx, setSelectedPreviewIdx] = useState<number>(0);
+  const [heroMediaTab, setHeroMediaTab] = useState<'cover' | 'sheet' | 'studio'>('cover');
+  const [heroAddedFeedback, setHeroAddedFeedback] = useState(false);
+
+  const featuredProduct = PRODUCTS[0]; // Botanica: Acanthus, Peony & Wild Rose
+
+  const handleHeroAddToCart = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    onAddToCart(featuredProduct, 'personal');
+    setHeroAddedFeedback(true);
+    setTimeout(() => setHeroAddedFeedback(false), 2000);
+  };
 
   const copy = UI_COPY[lang];
 
@@ -127,33 +138,208 @@ export const HomePage: React.FC<HomePageProps> = ({
             </div>
           </div>
 
-          {/* Hero Image Composition (Appears below introductory content on mobile) */}
-          <div className="lg:col-span-6">
-            <div className="relative w-full aspect-[4/3] sm:aspect-[16/10] lg:aspect-auto lg:h-full lg:min-h-[440px] rounded-2xl overflow-hidden border border-[#30272D]/10 bg-[#EACBD5]/25 shadow-xs">
-              <StudioImage
-                src={STUDIO_IMAGES.heroStationery}
-                alt="ZALEA CREATIV Botanical Coloring Book and Family Planner Flat-Lay"
-                loading="eager"
-                decoding="async"
-                fetchPriority="high"
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[#30272D]/90 via-[#30272D]/50 to-transparent p-4 sm:p-6 lg:p-8 text-[#FFF9F5] flex items-end justify-between gap-3">
-                <div className="min-w-0">
-                  <p className="text-[10px] sm:text-[11px] uppercase tracking-widest text-[#EACBD5] truncate">
-                    {lang === 'en' ? 'Featured Volume · 300 DPI Archival PDF' : 'Volum Recomandat · PDF 300 DPI'}
-                  </p>
-                  <p className="font-editorial text-lg sm:text-2xl lg:text-3xl text-[#FFF9F5] mt-0.5 truncate">
-                    {PRODUCTS[0].title[lang]}
-                  </p>
+          {/* Featured Real Product Showcase: Botanica: Acanthus, Peony & Wild Rose */}
+          <div className="lg:col-span-6 flex flex-col justify-between">
+            <div className="rounded-2xl bg-[#FFFCF9] border border-[#30272D]/12 overflow-hidden shadow-[0_14px_34px_-12px_rgba(48,39,45,0.12)] flex flex-col justify-between h-full">
+              {/* Product Header Bar */}
+              <div className="p-4 sm:p-5 pb-3 border-b border-[#30272D]/8 bg-[#FAF7F2]/80 flex items-center justify-between gap-3">
+                <div className="flex items-center gap-2 text-xs">
+                  <span className="font-medium text-[#A67589] uppercase tracking-wider text-[11px]">
+                    {lang === 'en' ? 'Featured Volume' : 'Volum Recomandat'}
+                  </span>
+                  <span className="text-[#30272D]/30">·</span>
+                  <span className="text-[#30272D]/75 text-[11px] font-medium">
+                    {featuredProduct.editionNote[lang]}
+                  </span>
                 </div>
-                <button
-                  type="button"
-                  onClick={() => onSelectProduct(PRODUCTS[0])}
-                  className="rounded-lg bg-[#FFF9F5] px-3.5 py-1.5 sm:py-2 text-xs font-medium text-[#30272D] hover:bg-[#EACBD5] transition-colors whitespace-nowrap shrink-0"
-                >
-                  {lang === 'en' ? 'View Edition' : 'Vezi Ediția'}
-                </button>
+                <div className="flex items-center gap-1.5 text-[11px] font-medium text-[#A67589] bg-[#EACBD5]/30 px-2.5 py-1 rounded-md">
+                  <span>300 DPI Archival PDF</span>
+                </div>
+              </div>
+
+              {/* Interactive Stage & Controls */}
+              <div className="p-4 sm:p-5 flex-1 flex flex-col justify-between space-y-4">
+                {/* 3 Interactive View Tabs */}
+                <div className="flex items-center gap-1 p-1 bg-[#EACBD5]/20 rounded-xl border border-[#30272D]/10">
+                  <button
+                    type="button"
+                    onClick={() => setHeroMediaTab('cover')}
+                    className={`flex-1 py-1.5 px-2 text-[11px] sm:text-xs font-medium rounded-lg transition-all text-center ${
+                      heroMediaTab === 'cover'
+                        ? 'bg-[#30272D] text-[#FFF9F5] shadow-xs'
+                        : 'text-[#30272D]/75 hover:bg-[#FFF9F5]'
+                    }`}
+                  >
+                    {lang === 'en' ? 'Edition Cover' : 'Copertă Ediție'}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setHeroMediaTab('sheet')}
+                    className={`flex-1 py-1.5 px-2 text-[11px] sm:text-xs font-medium rounded-lg transition-all text-center flex items-center justify-center gap-1 ${
+                      heroMediaTab === 'sheet'
+                        ? 'bg-[#30272D] text-[#FFF9F5] shadow-xs'
+                        : 'text-[#30272D]/75 hover:bg-[#FFF9F5]'
+                    }`}
+                  >
+                    <span>{lang === 'en' ? 'Interactive Plate IV' : 'Planșă Interactivă IV'}</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setHeroMediaTab('studio')}
+                    className={`flex-1 py-1.5 px-2 text-[11px] sm:text-xs font-medium rounded-lg transition-all text-center ${
+                      heroMediaTab === 'studio'
+                        ? 'bg-[#30272D] text-[#FFF9F5] shadow-xs'
+                        : 'text-[#30272D]/75 hover:bg-[#FFF9F5]'
+                    }`}
+                  >
+                    {lang === 'en' ? 'Studio Setup' : 'Atelier & Machetă'}
+                  </button>
+                </div>
+
+                {/* View Container */}
+                <div className="relative aspect-[4/3] sm:aspect-[16/11] w-full rounded-xl overflow-hidden border border-[#30272D]/10 bg-[#FAF7F2] flex items-center justify-center shadow-inner">
+                  {heroMediaTab === 'cover' && (
+                    <div
+                      onClick={() => onSelectProduct(featuredProduct)}
+                      className="cursor-pointer h-full w-full relative group"
+                    >
+                      <StudioImage
+                        src={featuredProduct.image}
+                        alt={featuredProduct.title[lang]}
+                        loading="eager"
+                        fetchPriority="high"
+                        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+                      />
+                      <div className="absolute inset-0 bg-[#30272D]/0 group-hover:bg-[#30272D]/15 transition-colors flex items-center justify-center">
+                        <span className="opacity-0 group-hover:opacity-100 transition-opacity rounded-lg bg-white/95 px-3 py-1.5 text-xs font-medium text-[#30272D] shadow-sm">
+                          {lang === 'en' ? 'Click to Inspect Edition' : 'Apasă pentru Detalii'}
+                        </span>
+                      </div>
+                    </div>
+                  )}
+
+                  {heroMediaTab === 'sheet' && (
+                    <div className="h-full w-full overflow-y-auto p-2.5 sm:p-3 flex flex-col items-center justify-center bg-[#FFFCF9]">
+                      <PrintableSheetRenderer
+                        sheet={featuredProduct.sheetPreviews[0]}
+                        lang={lang}
+                        interactiveColoring={true}
+                        compact={true}
+                      />
+                    </div>
+                  )}
+
+                  {heroMediaTab === 'studio' && (
+                    <div
+                      onClick={() => onSelectProduct(featuredProduct)}
+                      className="cursor-pointer h-full w-full"
+                    >
+                      <StudioImage
+                        src={featuredProduct.secondaryImage}
+                        alt="ZALEA CREATIV Botanical Coloring Book and Family Planner Flat-Lay"
+                        loading="lazy"
+                        className="h-full w-full object-cover"
+                      />
+                    </div>
+                  )}
+                </div>
+
+                {/* Real Product Metadata & Inclusions */}
+                <div>
+                  <div className="flex items-start justify-between gap-3">
+                    <div>
+                      <h3
+                        onClick={() => onSelectProduct(featuredProduct)}
+                        className="font-editorial text-xl sm:text-2xl font-medium text-[#30272D] hover:text-[#A67589] cursor-pointer transition-colors"
+                      >
+                        {featuredProduct.title[lang]}
+                      </h3>
+                      <p className="mt-1 text-xs sm:text-sm text-[#30272D]/75 leading-relaxed line-clamp-2">
+                        {featuredProduct.subtitle[lang]}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Tactile Craft Specification Badges */}
+                  <div className="mt-3 flex flex-wrap items-center gap-1.5 sm:gap-2 text-[11px] text-[#30272D]/75">
+                    <span className="inline-flex items-center gap-1 bg-[#FAF7F2] border border-[#30272D]/10 px-2 py-1 rounded-md">
+                      <BookOpen className="h-3 w-3 text-[#A67589] shrink-0" />
+                      <span>{lang === 'en' ? '42 Hand-Inked Plates' : '42 Planșe Desenate Manual'}</span>
+                    </span>
+                    <span className="inline-flex items-center gap-1 bg-[#FAF7F2] border border-[#30272D]/10 px-2 py-1 rounded-md">
+                      <Layers className="h-3 w-3 text-[#A67589] shrink-0" />
+                      <span>A4 &amp; US Letter</span>
+                    </span>
+                    <span className="inline-flex items-center gap-1 bg-[#FAF7F2] border border-[#30272D]/10 px-2 py-1 rounded-md">
+                      <Sparkles className="h-3 w-3 text-[#C8A46B] shrink-0" />
+                      <span>{lang === 'en' ? 'Bilingual EN + RO Index' : 'Index Bilingv EN + RO'}</span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Product Action Bar: Price + Add to Bag + Inspect */}
+              <div className="p-4 sm:p-5 pt-3 border-t border-[#30272D]/10 bg-[#FAF7F2]/70 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3.5">
+                <div className="flex flex-col">
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-xl sm:text-2xl font-semibold text-[#30272D] tabular-nums">
+                      €{featuredProduct.price.toFixed(2)}
+                    </span>
+                    <span className="text-[11px] text-[#30272D]/60 font-medium">
+                      {lang === 'en' ? 'Personal License' : 'Licență Personală'}
+                    </span>
+                  </div>
+                  <span className="text-[10px] text-[#A67589] uppercase tracking-wider font-medium mt-0.5">
+                    {lang === 'en' ? 'Instant Digital Download (PDF)' : 'Descărcare Digitală Instantanee (PDF)'}
+                  </span>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() =>
+                      onOpenSheetModal(
+                        featuredProduct.sheetPreviews[0],
+                        featuredProduct.title[lang]
+                      )
+                    }
+                    className="flex-1 sm:flex-none px-3.5 py-2.5 text-xs font-medium text-[#30272D] hover:text-[#A67589] border border-[#30272D]/15 rounded-xl bg-white hover:bg-[#FAF7F2] transition-colors whitespace-nowrap shrink-0 flex items-center justify-center gap-1.5"
+                  >
+                    <Eye className="h-3.5 w-3.5 text-[#A67589]" />
+                    <span>{lang === 'en' ? 'Inspect Plate' : 'Inspectează'}</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={handleHeroAddToCart}
+                    className={`flex-1 sm:flex-none inline-flex items-center justify-center gap-1.5 rounded-xl px-4 py-2.5 text-xs font-medium transition-colors whitespace-nowrap shrink-0 ${
+                      heroAddedFeedback
+                        ? 'bg-[#A67589] text-[#FFF9F5]'
+                        : 'bg-[#30272D] text-[#FFF9F5] hover:bg-[#A67589]'
+                    }`}
+                  >
+                    {heroAddedFeedback ? (
+                      <>
+                        <Check className="h-3.5 w-3.5" />
+                        <span>{lang === 'en' ? 'Added to Bag!' : 'Adăugat în Coș!'}</span>
+                      </>
+                    ) : (
+                      <>
+                        <ShoppingBag className="h-3.5 w-3.5" />
+                        <span>{lang === 'en' ? 'Add to Bag' : 'Adaugă în Coș'}</span>
+                      </>
+                    )}
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => onSelectProduct(featuredProduct)}
+                    className="hidden sm:inline-flex px-3 py-2.5 text-xs font-medium text-[#30272D]/75 hover:text-[#30272D] transition-colors whitespace-nowrap shrink-0"
+                    title={lang === 'en' ? 'View Complete Edition' : 'Vezi Toată Ediția'}
+                  >
+                    <ArrowRight className="h-4 w-4" />
+                  </button>
+                </div>
               </div>
             </div>
           </div>
