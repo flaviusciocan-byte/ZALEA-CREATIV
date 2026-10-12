@@ -1,0 +1,8 @@
+{
+  "name": "Zalea Creativ",
+  "description": "A boutique digital studio offering elegant printable coloring books, botanical stationery, and mindful creative treasures for inspired living.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

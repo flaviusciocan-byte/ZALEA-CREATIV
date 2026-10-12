@@ -1,0 +1,40 @@
+@import "tailwindcss";
+
+@theme {
+  --font-serif: "Cormorant Garamond", Georgia, Cambria, "Times New Roman", Times, serif;
+  --font-sans: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+
+  --color-zalea-ivory: #FFF9F5;
+  --color-zalea-rose: #EACBD5;
+  --color-zalea-mauve: #A67589;
+  --color-zalea-gold: #C8A46B;
+  --color-zalea-charcoal: #30272D;
+}
+
+@layer base {
+  html {
+    font-family: var(--font-sans);
+    background-color: #FFF9F5;
+    color: #30272D;
+    scroll-behavior: smooth;
+  }
+
+  h1, h2, h3, h4, .font-editorial {
+    font-family: var(--font-serif);
+    text-wrap: balance;
+  }
+}
+
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  body {
+    background: #FFFFFF !important;
+    color: #000000 !important;
+  }
+}
